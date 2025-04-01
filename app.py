@@ -1,7 +1,7 @@
 import streamlit as st
 import yfinance as yf
 import pandas as pd
-import google.generativeai as genai
+from google import genai
 import plotly.graph_objects as go
 from datetime import datetime, timedelta
 
@@ -10,10 +10,10 @@ tokenGenAI = "AIzaSyAIcKJ8_n3oybahm13Zv-Gjo1hnPxDAvrk"
 client = genai.Client(api_key=tokenGenAI)
 
 # Configuración de la página
-st.set_page_config(page_title="Descripción de Empresas", layout="centered")
+st.set_page_config(page_title="Riesgo-Retorno Empresa", layout="centered")
 
 # Título principal
-st.title("Calculadora de Riesgo-Retorno de una Acción 📊")
+st.title("Calculadora de Riesgo-Retorno de una Acción")
 
 # Input para ingresar el símbolo de la acción
 symbol = st.text_input("Ingresa el símbolo de la acción (Ej: AAPL, TSLA, MSFT)", "", help="Introduce el ticker de la empresa y presiona buscar.")
@@ -57,7 +57,7 @@ if st.button("Buscar"):
             end_date = datetime.today()
             start_date = end_date - timedelta(days=5*365)
 
-            hist = company.history(period="5y")
+            hist = company.history(start=start_date.strftime('%Y-%m-%d'), end=end_date.strftime('%Y-%m-%d'))
 
             if not hist.empty:
                 fig = go.Figure()
